@@ -29,6 +29,7 @@ namespace IdentityServerAspNetIdentity
       get
       {
         string angularip = "https://localhost:5003";
+        string blazorip = "https://localhost:5004";
 
         return new List<Client>
             {
@@ -97,7 +98,38 @@ namespace IdentityServerAspNetIdentity
                   "customerClaims",
                   "securedApi","api1"
                 },
+              },
+              new Client
+              {
+                ClientId = "blazorClient",
+                ClientName = "Blazor Client",
+                RequireClientSecret = false,
+                AllowedGrantTypes = GrantTypes.Code,
+
+                RequirePkce = true,
+                RequireConsent = false,
+
+                RedirectUris =
+                {
+                 blazorip + "/authentication/login-callback"
+                },
+                PostLogoutRedirectUris =
+                {
+                  blazorip + "/authentication/logout-callback"
+                },
+
+                AllowedCorsOrigins = {blazorip },
+
+                AllowedScopes =
+                {
+                  IdentityServerConstants.StandardScopes.OpenId,
+                  IdentityServerConstants.StandardScopes.Profile,
+                  "productClaims",
+                  "customerClaims",
+                  "api1"
+                },
               }
+
             };
       }
     }
