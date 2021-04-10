@@ -20,7 +20,7 @@ namespace BlazorClient
       builder.RootComponents.Add<App>("#app");
 
       builder.Services
-             .AddTransient<WeatherForcastApiAuthorizationMessageHandler>();
+             .AddTransient<ApiAuthorizationMessageHandler>();
 
       builder.Services.AddOidcAuthentication(options =>
       {
@@ -31,7 +31,11 @@ namespace BlazorClient
       builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
       builder.Services.AddHttpClient<IWeatherForcastService, WeatherForcastService>(
                client => client.BaseAddress = new Uri("https://localhost:6001/"))
-             .AddHttpMessageHandler<WeatherForcastApiAuthorizationMessageHandler>();
+             .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
+
+      builder.Services.AddHttpClient<IProductService, ProductService>(
+               client => client.BaseAddress = new Uri("https://localhost:6001/"))
+             .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
 
 
       await builder.Build().RunAsync();

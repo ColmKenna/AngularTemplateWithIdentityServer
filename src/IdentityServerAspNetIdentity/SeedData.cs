@@ -78,18 +78,19 @@ namespace IdentityServerAspNetIdentity
             Email = "AliceSmith@email.com",
             EmailConfirmed = true,
           };
-          var result = userMgr.CreateAsync(alice, "Pass123$").Result;
+          IdentityResult result = userMgr.CreateAsync(alice, "Pass123$").Result;
           if (!result.Succeeded)
           {
             throw new Exception(result.Errors.First().Description);
           }
-
           result = userMgr.AddClaimsAsync(alice, new Claim[]
           {
             new Claim(JwtClaimTypes.Name, "Alice Smith"),
             new Claim(JwtClaimTypes.GivenName, "Alice"),
             new Claim(JwtClaimTypes.FamilyName, "Smith"),
             new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+            new Claim("CanViewProducts", "true"),
+
           }).Result;
           if (!result.Succeeded)
           {

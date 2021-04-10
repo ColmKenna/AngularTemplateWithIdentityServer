@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace BlazorClient.MessageHandlers
 {
-  public class WeatherForcastApiAuthorizationMessageHandler : AuthorizationMessageHandler
+  public class ApiAuthorizationMessageHandler : AuthorizationMessageHandler
   {
-    public WeatherForcastApiAuthorizationMessageHandler(IAccessTokenProvider provider, NavigationManager navigation) : base(provider, navigation)
+    public ApiAuthorizationMessageHandler(IAccessTokenProvider provider, NavigationManager navigation) : base(provider, navigation)
     {
       ConfigureHandler(
         authorizedUrls: new[] { "https://localhost:6001/" });

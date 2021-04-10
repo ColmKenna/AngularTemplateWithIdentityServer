@@ -8,4 +8,10 @@ namespace BlazorClient.Services
   {
     Task<IEnumerable<WeatherForecast>> GetWeatherForcast();
   }
+
+  public interface IProductService
+  {
+    Task<IEnumerable<Product>> GetProducts();
+  }
+
 }

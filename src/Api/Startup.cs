@@ -2,6 +2,7 @@
 // See LICENSE in the project root for license information.
 
 
+using Api.Policies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -11,10 +12,7 @@ namespace Api
 
   public class Startup
   {
-
-    readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
-
+    
     public void ConfigureServices(IServiceCollection services)
     {
       //services.AddCors(options =>
@@ -54,12 +52,11 @@ namespace Api
       // adds an authorization policy to make sure the token is for scope 'api1'
       services.AddAuthorization(options =>
       {
-        options.AddPolicy("ApiScope", policy =>
-        {
-          policy.RequireAuthenticatedUser();
-          policy.RequireClaim("scope", "api1");
-        });
+        options.AddPolicy(CanAccessApi.ApiScope, CanAccessApi.Policy());
+        options.AddPolicy(CanViewProductsPolicy.CanViewProducts, CanViewProductsPolicy.Policy() );
+        
       });
+
     }
 
     public void Configure(IApplicationBuilder app)

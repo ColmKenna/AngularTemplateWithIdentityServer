@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Api.Controllers
 {
@@ -18,10 +20,11 @@ namespace Api.Controllers
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    private IActionDescriptorCollectionProvider actionDescriptorCollectionProvider;
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IAuthorizationPolicyProvider authorizationPolicyProvider, IConfigureOptions<AuthorizationOptions> authConfigureOptions, IActionDescriptorCollectionProvider actionDescriptorCollectionProvider)
     {
       _logger = logger;
+      this.actionDescriptorCollectionProvider = actionDescriptorCollectionProvider;
     }
 
     [HttpGet]

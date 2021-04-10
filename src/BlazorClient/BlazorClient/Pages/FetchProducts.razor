@@ -1,0 +1,48 @@
+﻿<h3>FetchProducts</h3>
+@page "/fetchproducts"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@using BlazorClient.Data
+@using BlazorClient.Services
+@inject IProductService productService
+
+<h1>Products</h1>
+
+
+@if (products == null)
+{
+  <p><em>Loading...</em></p>
+}
+else
+{
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var product in products)
+    {
+      <tr>
+        <td>@product.Id </td>
+        <td>@product.Name </td>
+        <td>@product.Price</td>
+      </tr>
+    }
+    </tbody>
+  </table>
+}
+
+@code {
+  private Product[] products;
+
+  protected override async Task OnInitializedAsync()
+  {
+    products = (await productService.GetProducts()).ToArray();
+  }
+
+
+}
+
