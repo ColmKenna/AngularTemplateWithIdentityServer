@@ -15,13 +15,15 @@ namespace IdentityServerAspNetIdentity
         {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Email(),
+                new IdentityResource("CanViewProducts", new [] { "CanViewProducts" })
         };
 
 
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-                new ApiScope("api1", "My API")
+                new ApiScope("api1", "My API", new List<string>(){"CanViewProducts"})
         };
 
     public static IEnumerable<Client> Clients
@@ -126,7 +128,8 @@ namespace IdentityServerAspNetIdentity
                   IdentityServerConstants.StandardScopes.Profile,
                   "productClaims",
                   "customerClaims",
-                  "api1"
+                  "api1",
+                  "CanViewProducts"
                 },
               }
 
