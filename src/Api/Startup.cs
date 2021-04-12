@@ -2,7 +2,6 @@
 // See LICENSE in the project root for license information.
 
 
-using Api.Policies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -52,9 +51,9 @@ namespace Api
       // adds an authorization policy to make sure the token is for scope 'api1'
       services.AddAuthorization(options =>
       {
-        options.AddPolicy(CanAccessApi.ApiScope, CanAccessApi.Policy());
-        options.AddPolicy(CanViewProductsPolicy.CanViewProducts, CanViewProductsPolicy.Policy() );
-        
+        options.AddPolicy(Policies.CanAccessApi.ApiScope, Policies.CanAccessApi.Policy());
+        options.AddPolicy(Policies.CanViewProductsPolicy.CanViewProducts, Policies.CanViewProductsPolicy.Policy() );
+        options.AddPolicy(Policies.CanViewLocationsPolicy.CanViewLocations , Policies.CanViewLocationsPolicy.Policy());
       });
 
     }

@@ -6,33 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Policies
 {
-
-  public static class CanAccessApi
-  {
-    public const string ApiScope = "ApiScope";
-
-    public static AuthorizationPolicy Policy()
-    {
-      return new AuthorizationPolicyBuilder()
-             .RequireAuthenticatedUser()
-             .RequireClaim("scope", "api1")
-             .Build();
-    }
-
-  }
-
-
-public static class CanViewProductsPolicy
+  public static class CanViewProductsPolicy
   { 
-    public const string CanViewProducts = "CanViewProducts";
+    public const string CanViewProducts = "CanViewLocations";
 
-    public static AuthorizationPolicy Policy()
-    {
-      return new AuthorizationPolicyBuilder()
-             .RequireAuthenticatedUser()
-             .RequireClaim(CanViewProducts, "true")
-             .Build();
-    }
+    public static AuthorizationPolicy Policy() =>
+      PolicyBuilder.Policy(CanViewProducts, "true");
 
   }
 }
