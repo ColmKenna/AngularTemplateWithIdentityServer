@@ -4,6 +4,8 @@ using BlazorClient.Data;
 
 namespace BlazorClient.Services
 {
+
+
   public interface IWeatherForcastService  
   {
     Task<IEnumerable<WeatherForecast>> GetWeatherForcast();

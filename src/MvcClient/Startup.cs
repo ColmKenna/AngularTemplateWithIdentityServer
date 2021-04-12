@@ -4,10 +4,19 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ServicesForDotnetClientApps;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Http;
+using ServicesForDotnetClientApps.Implementations;
+using MvcClient.MessageHandlers;
 
 namespace MvcClient
 {
@@ -24,6 +33,40 @@ namespace MvcClient
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllersWithViews();
+      JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+      services.AddAuthentication(options =>
+              {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+              })
+              .AddCookie()
+              .AddOpenIdConnect( options =>
+              {
+                options.Authority = "https://localhost:5001";
+
+                options.ClientId = "mvc";
+                options.ClientSecret = "secret";
+                options.ResponseType = "code";
+                options.CallbackPath = "/signin-oidc";
+
+                options.Scope.Add("api1");
+
+                options.SaveTokens = true;
+              });
+
+      services.AddHttpContextAccessor();
+
+      services.AddHttpClient<IWeatherForcastService, WeatherForcastService>(
+        async (services, client) =>
+        {
+          var accessor = services.GetRequiredService<IHttpContextAccessor>();
+          var accessToken = await accessor.HttpContext
+                                          .GetTokenAsync("access_token");
+          client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("bearer", accessToken);
+          client.BaseAddress = new Uri("https://localhost:6001");
+        });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +86,7 @@ namespace MvcClient
       app.UseStaticFiles();
 
       app.UseRouting();
-
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
