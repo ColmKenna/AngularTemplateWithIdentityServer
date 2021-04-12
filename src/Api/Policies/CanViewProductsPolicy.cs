@@ -7,32 +7,23 @@ using Microsoft.AspNetCore.Authorization;
 namespace Api.Policies
 {
 
-  public static class CanAccessApi
+  public static class PolicyBuilder
   {
-    public const string ApiScope = "ApiScope";
-
-    public static AuthorizationPolicy Policy()
+    public static AuthorizationPolicy Policy(string name, params string[] claims)
     {
       return new AuthorizationPolicyBuilder()
              .RequireAuthenticatedUser()
-             .RequireClaim("scope", "api1")
+             .RequireClaim(name, claims)
              .Build();
+
     }
-
   }
-
-
-public static class CanViewProductsPolicy
+  public static class CanViewProductsPolicy
   { 
     public const string CanViewProducts = "CanViewProducts";
 
-    public static AuthorizationPolicy Policy()
-    {
-      return new AuthorizationPolicyBuilder()
-             .RequireAuthenticatedUser()
-             .RequireClaim(CanViewProducts, "true")
-             .Build();
-    }
+    public static AuthorizationPolicy Policy() =>
+      PolicyBuilder.Policy(CanViewProducts, "true");
 
   }
 }
