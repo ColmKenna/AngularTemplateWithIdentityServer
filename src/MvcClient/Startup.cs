@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -56,6 +57,7 @@ namespace MvcClient
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.ClaimActions.MapUniqueJsonKey("FullName", "FullName");
                 options.ClaimActions.MapUniqueJsonKey("Name", "name");
+                options.ClaimActions.MapUniqueJsonKey("CanViewLocations", "CanViewLocations");
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                   NameClaimType = "name",
@@ -67,16 +69,16 @@ namespace MvcClient
 
       services.AddHttpContextAccessor();
 
-      services.AddHttpClient<IWeatherForcastService, WeatherForcastService>(
-        async (services, client) =>
-        {
-          var accessor = services.GetRequiredService<IHttpContextAccessor>();
-          var accessToken = await accessor.HttpContext
-                                          .GetTokenAsync("access_token");
-          client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("bearer", accessToken);
-          client.BaseAddress = new Uri("https://localhost:6001");
-        });
+      Action<IServiceProvider, HttpClient> configureClient = async (services, client) =>
+      {
+        var accessor = services.GetRequiredService<IHttpContextAccessor>();
+        var accessToken = await accessor.HttpContext.GetTokenAsync("access_token");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+        client.BaseAddress = new Uri("https://localhost:6001");
+      };
+
+      services.AddHttpClient<IWeatherForcastService, WeatherForcastService>(configureClient);
+      services.AddHttpClient<ILocationService, LocationService>(configureClient);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

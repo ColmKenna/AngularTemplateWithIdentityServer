@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace ServicesForDotnetClientApps
 {
-
-  public interface IWeatherForcastService
+  public interface ILocationService
   {
-    Task<IEnumerable<WeatherForecast>> GetWeatherForcast();
+    Task<IEnumerable<Location>> GetLocations();
   }
 }

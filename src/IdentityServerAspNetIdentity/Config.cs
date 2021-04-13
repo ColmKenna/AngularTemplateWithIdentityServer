@@ -16,14 +16,16 @@ namespace IdentityServerAspNetIdentity
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email(),
-                new IdentityResource("CanViewProducts", new [] { "CanViewProducts" })
+                new IdentityResource("CanViewProducts", new [] { "CanViewProducts" }),
+                new IdentityResource("CanViewLocations", new [] { "CanViewLocations" })
+
         };
 
 
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-                new ApiScope("api1", "My API", new List<string>(){"CanViewProducts", "email","name"})
+                new ApiScope("api1", "My API", new List<string>(){"CanViewProducts", "CanViewLocations","email","name"})
         };
 
     public static IEnumerable<Client> Clients
@@ -66,6 +68,7 @@ namespace IdentityServerAspNetIdentity
                   IdentityServerConstants.StandardScopes.OpenId,
                   IdentityServerConstants.StandardScopes.Profile,
                   IdentityServerConstants.StandardScopes.Email,
+                  "CanViewLocations",
                   "api1", 
                   "name"
                 }

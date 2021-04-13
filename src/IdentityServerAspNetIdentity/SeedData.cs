@@ -90,6 +90,8 @@ namespace IdentityServerAspNetIdentity
             new Claim(JwtClaimTypes.FamilyName, "Smith"),
             new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
             new Claim("CanViewProducts", "true"),
+            new Claim("CanViewLocations", "true"),
+            
 
           }).Result;
           if (!result.Succeeded)
