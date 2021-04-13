@@ -23,7 +23,7 @@ namespace IdentityServerAspNetIdentity
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-                new ApiScope("api1", "My API", new List<string>(){"CanViewProducts", "email"})
+                new ApiScope("api1", "My API", new List<string>(){"CanViewProducts", "email","name"})
         };
 
     public static IEnumerable<Client> Clients
@@ -66,7 +66,8 @@ namespace IdentityServerAspNetIdentity
                   IdentityServerConstants.StandardScopes.OpenId,
                   IdentityServerConstants.StandardScopes.Profile,
                   IdentityServerConstants.StandardScopes.Email,
-                  "api1"
+                  "api1", 
+                  "name"
                 }
               },
               new Client

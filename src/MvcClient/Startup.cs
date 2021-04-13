@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using ServicesForDotnetClientApps.Implementations;
 using MvcClient.MessageHandlers;
 
@@ -52,8 +53,17 @@ namespace MvcClient
 
                 options.Scope.Add("api1");
 
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.ClaimActions.MapUniqueJsonKey("FullName", "FullName");
+                options.ClaimActions.MapUniqueJsonKey("Name", "name");
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                  NameClaimType = "name",
+                  // RoleClaimType = "role"
+                };
+
                 options.SaveTokens = true;
-              });
+              }) ;
 
       services.AddHttpContextAccessor();
 
